@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <linux/limits.h>
 
@@ -35,9 +36,15 @@ int do_pwd(int argc, char** argv) {
 int do_fg(int argc, char** argv) {
   if (!validate_fg_argv(argc, argv))
     return -1;
-
+   
   // TODO: Fill this.
+  int status;
+  int bgstatus = waitpid(bgpid,&status,WNOHANG);
+ 
+  if(bgstatus == 0)
+     printf("%d\trunning\t\t%s\n",bgpid,bg_full_command);
 
+  waitpid(bgpid,&status,0);
   return 0;
 }
 

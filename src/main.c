@@ -1,13 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <signal.h>
+#include <unistd.h>
+#include "signal_handlers.h"
 #include "commands.h"
 #include "built_in.h"
 #include "utils.h"
 
+#define _POSIX_C_SOURCE 200112L
+
 int main()
 {
+  signal(SIGINT,(void*)catch_sigint);
+  signal(SIGTSTP,(void*)catch_sigtstp);
+
   char buf[8096];
 
   while (1) {
@@ -21,11 +28,11 @@ int main()
 
     free_commands(n_commands, &commands);
     n_commands = 0;
-
+    
+    memset(buf,0,sizeof(char)*8096);
     if (ret == 1) {
       break;
     }
   }
-
   return 0;
 }

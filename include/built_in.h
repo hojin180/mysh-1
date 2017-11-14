@@ -1,6 +1,9 @@
 #ifndef BUILT_IN_H_
 #define BUILT_IN_H_
 
+int bgpid;
+char* bg_full_command;
+
 typedef int (*built_in_command_do)(int, char**);
 typedef int (*built_in_command_validate)(int, char**);
 
